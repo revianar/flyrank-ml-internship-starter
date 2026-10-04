@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Do low-visibility pages still earn real engagement? (draft)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F5F4F0; --ink:#1C1B19; --ink-soft:#5B574E;
+    --rule:#DAD6CC; --visibility:#2C5F6B; --engagement:#9C5A1B; --pending:#8A8272;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; background:var(--paper); color:var(--ink); font-family:"Source Serif 4",Georgia,serif; line-height:1.6;}
+  .wrap{max-width:720px; margin:0 auto; padding:0 24px 96px;}
+  .banner{background:var(--ink); color:var(--paper); font-family:system-ui,sans-serif; font-size:14px; padding:10px 24px; text-align:center;}
+  header.hero{padding:72px 0 40px; border-bottom:1px solid var(--rule);}
+  h1{font-family:"Fraunces",Georgia,serif; font-weight:600; font-optical-sizing:auto; font-size:clamp(28px,5vw,40px); line-height:1.15; margin:0 0 20px; max-width:14ch;}
+  .dek{font-style:italic; color:var(--ink-soft); font-size:18px; max-width:52ch; margin:0 0 32px;}
+  .funnel{list-style:none; margin:0; padding:0; font-family:system-ui,sans-serif; font-size:15px;}
+  .funnel li{display:flex; justify-content:space-between; gap:16px; padding:8px 0; border-top:1px solid var(--rule);}
+  .funnel li:first-child{border-top:none;}
+  .funnel .n{font-variant-numeric:tabular-nums; font-weight:600;}
+  section{padding:48px 0; border-bottom:1px solid var(--rule);}
+  section:last-of-type{border-bottom:none;}
+  .secnum{font-family:"Fraunces",Georgia,serif; font-weight:500; color:var(--ink-soft); font-size:14px; margin:0 0 4px;}
+  h2{font-family:"Fraunces",Georgia,serif; font-weight:600; font-size:26px; margin:0 0 20px;}
+  h3{font-family:"Fraunces",Georgia,serif; font-weight:600; font-size:18px; margin:28px 0 10px;}
+  p{margin:0 0 16px; max-width:70ch;}
+  .lede{font-size:18px;}
+  table{width:100%; border-collapse:collapse; margin:16px 0; font-family:system-ui,sans-serif; font-size:13.5px;}
+  th,td{text-align:left; padding:7px 9px; border-bottom:1px solid var(--rule); font-variant-numeric:tabular-nums;}
+  th{font-weight:600; color:var(--ink-soft); border-bottom:2px solid var(--ink);}
+  .pending{border-bottom:1px dashed var(--pending); color:var(--pending); cursor:help;}
+  code{font-family:ui-monospace,"SFMono-Regular",Menlo,monospace; font-size:.9em; background:#EDEAE1; padding:1px 5px; border-radius:3px;}
+  .checklist{list-style:none; margin:16px 0; padding:0; font-family:system-ui,sans-serif; font-size:14px;}
+  .checklist li{padding:4px 0; color:var(--ink-soft);}
+  .checklist li::before{content:"☐ "; color:var(--pending);}
+  .tag-v{color:var(--visibility); font-weight:600;} .tag-e{color:var(--engagement); font-weight:600;}
+  .callout{background:#EDEAE1; border-left:3px solid var(--ink-soft); padding:12px 16px; font-size:15px; margin:16px 0;}
+  footer{padding:40px 0; font-family:system-ui,sans-serif; font-size:13px; color:var(--ink-soft);}
+  a{color:var(--ink);}
+</style>
+</head>
+<body>
+
+<div class="banner">Draft — five of nine track notebooks still need a full run. See Reproducibility for the exact list.</div>
+
+<div class="wrap">
+<header class="hero">
+  <h1>Do pages with weak search visibility still earn real engagement?</h1>
+  <p class="dek">A decision-support look at FlyRank's March&ndash;April 2026 content warehouse, and whether a simple visibility rule misses pages that already have an audience.</p>
+  <ul class="funnel">
+    <li><span>March 2026 daily rows</span><span class="n">9,841,378</span></li>
+    <li><span>Distinct pages, 55 clients</span><span class="n">331,437</span></li>
+    <li><span>Pages with computable <span class="tag-e">engagement</span></span><span class="n">90,237 (27.2%)</span></li>
+    <li><span>Modeled population (&ge;10 sessions)</span><span class="n">21,207 across 32 clients</span></li>
+  </ul>
+</header>
+
+<section id="abstract">
+  <p class="secnum">00</p><h2>Abstract</h2>
+  <p class="lede">A content team reviewing thousands of pages a month can't audit every page's full history by hand, so most teams triage with a simple <span class="tag-v">visibility</span> rule. This paper asks whether that rule misses pages that already earn real <span class="tag-e">engagement</span> despite weak measured search visibility, using FlyRank's pseudonymized March&ndash;April 2026 warehouse &mdash; 9.8M daily rows, 331,437 pages, 21,207 modeled across 32 clients after a reliability floor. A K-Means clustering of engagement, visibility, volume, and session depth is validated by holding out whole clients; a stability rule fixed before looking at results favors k=3, and no cluster at k=3 or k=4 independently satisfies an engagement-and-visibility definition of "hidden gem" &mdash; permutation importance shows the clustering is organized almost entirely by session volume and depth, not by the two variables the hypothesis turns on. The hand rule the model was meant to test, however, holds up on a genuinely out-of-sample month: its 220 flagged pages show 66% higher engagement than the population in April, untouched by any fitting. The result is decision-support for a review queue, not an automated ranking or a claim about any search algorithm.</p>
+</section>
+
+<section id="intro">
+  <p class="secnum">01</p><h2>Introduction</h2>
+  <p>A content strategist can't review every page's full metric history by hand each week, so in practice a shortlist gets attention and everything else waits. This paper asks a narrow question: among pages a search-visibility rule would never surface, are there any quietly earning strong engagement once someone finds them?</p>
+  <p>Two different problems look the same in a glance at a health score: a page nobody can find, and a page nobody wants. If those differ, a rule built on visibility alone misses the first case &mdash; a real audience, held back by discoverability rather than content quality. This paper calls that a <em>hidden gem</em>: measurably low search visibility, above-typical engagement once traffic arrives.</p>
+  <p>Getting this wrong costs editorial time, not safety: filing a hidden gem as "leave it alone" wastes an easy discoverability win, and wrongly flagging one wastes review time on a measurement artifact. Nothing here acts on a live page automatically &mdash; this is decision-support meant to shorten a review queue.</p>
+</section>
+
+<section id="data">
+  <p class="secnum">02</p><h2>Data</h2>
+  <p>This analysis uses FlyRank's pseudonymized internship warehouse, <code>fact_content_daily_performance</code>, March 2026 partition: 9,841,378 rows, one per (date, client, page), across all 31 days and 55 clients.</p>
+  <p>Coverage is partial by design: Search Console data is present on 36.7% of rows, Analytics on 4.2%, both together on 3.7%. Availability is a three-valued flag, so rows were filtered on <code>IS TRUE</code> rather than treated as zero engagement.</p>
+  <p>Engagement rate was computable for 90,237 of 331,437 pages (27.2%); the rest lacked Analytics coverage and were excluded, not zero-filled. A 10-session floor leaves the modeled population: 21,207 pages, 32 clients, 6.4% of March pages.</p>
+</section>
+
+<section id="methodology">
+  <p class="secnum">03</p><h2>Methodology</h2>
+  <p>The design has three parts: an operational definition of a "hidden gem," a comparison against a transparent baseline, and validation on clients the model has never seen.</p>
+  <p><strong>Baseline.</strong> A hand rule flags a page if it clears the session floor and Search Console data was available on &le;10% of days. It flags 220 pages, ranked by March engagement rate.</p>
+  <p><strong>Features.</strong> Four inputs: engagement rate, Search Console availability rate, log sessions, log session depth &mdash; everything the baseline sees, plus depth.</p>
+  <p><strong>Validation split.</strong> Five client-grouped folds; two are a single client each. Every page is labeled by a model that never saw its client.</p>
+  <h3>Choosing k</h3>
+  <p>k is selected by mean transfer ARI among candidates where every held-out fold's smallest cluster holds at least 50 pages &mdash; fixed before looking at the table. Silhouette is shown for reference only: a Week-3 check found it rises (0.654&rarr;0.712) when the cluster label is fed back in as a feature.</p>
+  <table>
+    <tr><th>k</th><th>Transfer ARI (mean)</th><th>Smallest held-out cluster</th><th>Clears 50-page floor</th></tr>
+    <tr><td>2</td><td>0.499</td><td>589</td><td>yes</td></tr>
+    <tr><td><strong>3</strong></td><td><strong>0.624</strong></td><td>162</td><td><strong>yes &mdash; selected</strong></td></tr>
+    <tr><td>4</td><td>0.642</td><td>30</td><td>no</td></tr>
+    <tr><td>5</td><td>0.577</td><td>30</td><td>no</td></tr>
+    <tr><td>6</td><td>0.646</td><td>9</td><td>no</td></tr>
+    <tr><td>7</td><td>0.565</td><td>9</td><td>no</td></tr>
+    <tr><td>8</td><td>0.648</td><td>9</td><td>no</td></tr>
+  </table>
+  <div class="callout">The rule selects <strong>k=3</strong>. k=4 has a nominally higher transfer ARI but is disqualified: its smallest held-out cluster holds 30 pages, under the floor. The detailed cluster diagnostics in Results use <strong>k=4</strong>, examined separately as a manual check on whether relaxing the floor changes the conclusion &mdash; it does not: the hidden-gem definition returns no match at either k.</div>
+  <p><strong>Defining the hidden-gem cluster.</strong> Among clusters with above-population-median engagement <em>and</em> median availability at or below the baseline's own 10% cutoff, the one with the highest engagement rate. Population median engagement rate: 0.0000.</p>
+  <p><strong>Outcome.</strong> Clusters and the ranking score use March only; the outcome is pooled April engagement. June 2026 was not touched.</p>
+</section>
+
+<section id="results">
+  <p class="secnum">04</p><h2>Results</h2>
+  <p><strong>No cluster, at k=3 or k=4, independently satisfies the hidden-gem definition.</strong> At k=3 (the rule's own pick) and separately at k=4, <code>GEM_CLUSTER</code> returns <code>None</code>: no cluster's median clears both the engagement and visibility bars.</p>
+
+  <p><strong>But the baseline rule it was meant to test is independently validated.</strong> At k=4, an out-of-fold agreement check (ARI 0.847) places all 220 baseline-flagged pages into a single 689-page cluster, with zero flagged pages in any other cluster. An unsupervised method given no information about the hand rule's threshold rediscovers the same group.</p>
+
+  <p><strong>Why the cluster-level rule still fails:</strong> permutation importance at k=4, on a held-out fold, shows the clustering is driven almost entirely by <code>log_sessions</code> (0.387) and <code>log_session_depth_sec</code> (0.138); <code>gsc_availability_rate</code> (0.008) and <code>engagement_rate</code> (0.017) barely register. The cluster correlates with low visibility but isn't organized by it &mdash; so a rule requiring the cluster's own median to clear visibility-and-engagement bars was unlikely to fire at any k.</p>
+
+  <h3>Model vs. baseline</h3>
+  <p>Same 21,207 pages, same held-out-client split, same score (March engagement), outcome = April 2026, never touched during fitting.</p>
+  <table>
+    <tr><th>Set</th><th>Pages</th><th>Clients</th><th>Mar. engagement</th><th>Apr. &ge;10 sessions</th><th>Apr. engagement</th></tr>
+    <tr><td>All floor pages (base rate)</td><td>21,207</td><td>32</td><td>0.022</td><td>57.9%</td><td>0.038</td></tr>
+    <tr><td><strong>Baseline: all flagged</strong></td><td>220</td><td>23</td><td>0.058</td><td>46.4%</td><td><strong>0.063</strong></td></tr>
+    <tr><td>Baseline: top-50</td><td>50</td><td>8</td><td>0.166</td><td>58.0%</td><td>0.087</td></tr>
+    <tr><td>Baseline: top-20</td><td>20</td><td>6</td><td>0.244</td><td>40.0%</td><td>0.101</td></tr>
+  </table>
+  <p>The full 220-page set is the number to trust: 0.063 vs. 0.038 base rate (1.66&times;), out-of-sample, not selected on the single most extreme March values.</p>
+
+  <p><strong>The top-20 cut regresses harder than the full set:</strong> March 0.244 falls to April 0.101 &mdash; more than half its lead evaporates. The three single worst misses: two pages from one client (March 0.308 and 0.300, both 0.0 in April) and one from another (March 0.286, 0.0 in April).</p>
+
+  <p><strong>Late Search Console onboarding is a minor confound, not the explanation:</strong> only 0.5% of the 220 flagged pages come from clients whose connection started after the March window (vs. 0.1% population-wide).</p>
+
+  <h3>Exploratory follow-up (post-hoc, k=4)</h3>
+  <p>Run after the cluster-level result came back null, using the same data &mdash; reported as exploratory, not confirmatory. Within the 689-page low-visibility cluster, engagement is not uniform: the 220 pages the strict &le;10% cutoff flags show 51.4% with any engaged sessions (median 0.041, 90th pct. 0.174); the remaining 469 pages in the same cluster (10&ndash;48% availability) show 29.6% with any engagement (median 0.000, 90th pct. 0.091). The signal appears to taper with availability rather than switch on sharply at 10% &mdash; worth a future pass, not grounds to redraw the threshold here.</p>
+</section>
+
+<section id="limitations">
+  <p class="secnum">05</p><h2>Limitations &amp; honest framing</h2>
+  <p>Ordered by how much each threatens the central claim.</p>
+  <p><strong>The model-level comparison could not run as designed.</strong> No cluster independently satisfies the hidden-gem definition at any k tested; the headline result comes from validating the baseline rule, not from a model-selected set beating it.</p>
+  <p><strong>The notebook's committed state uses k=4 via a manual override left over from a side-check</strong>, not the rule's own k=3 pick. Both return the same null cluster-level result, but <code>K_OVERRIDE</code> should be reset to <code>None</code> before final submission so the committed receipt matches the stated methodology exactly.</p>
+  <p><strong>The exploratory within-cluster split is post-hoc</strong>, run after the null result on the same data that produced it &mdash; treat as a hypothesis for a future pass, not a validated finding.</p>
+  <p><strong>No control arm was built.</strong> Nothing here rules out that elevated engagement is simply sticky regardless of visibility rather than a visibility-specific effect.</p>
+  <p><strong>Top-N cuts are considerably less reliable than the full flagged set</strong>, both statistically (regression to the mean, demonstrated above) and mechanically (tie-breaking in the ranking isn't fully deterministic between runs).</p>
+  <p><strong>Client concentration shows up directly in the worst cases:</strong> two of the three largest single-page misses in the top-20 share one client.</p>
+  <p><strong>Scope and time window:</strong> the modeled population is 6.4% of March pages; this is a single feature month and a single outcome month; nothing here is a trend or a claim about how any search algorithm works.</p>
+</section>
+
+<section id="recommendations">
+  <p class="secnum">06</p><h2>Ranked recommendations</h2>
+  <p>This paper supports one action: continuing to use the existing visibility-rule queue, now validated on a genuinely held-out month.</p>
+  <p><strong>Use the full 220-page flagged set as the review queue, not a narrow top-N cut.</strong> The full set holds up out-of-sample and is far more stable across reruns than the top-20.</p>
+  <p><strong>Treat the worst-case pattern above as this method's known failure mode:</strong> a single standout March, often client-concentrated, collapsing by April. A quick multi-month check before acting on any individual pick is cheap insurance.</p>
+  <p><strong>One reason code:</strong> <code>low_visibility_high_engagement</code>. A separate data-connection flag isn't warranted &mdash; only 0.5% of this set ties to a late Search Console connection.</p>
+  <p><strong>Before acting on any pick:</strong> confirm the session count isn't at the floor's edge, and check more than one prior month where the data allows it.</p>
+</section>
+
+<section id="repro">
+  <p class="secnum">07</p><h2>Reproducibility</h2>
+  <p>Seed 42; dependencies pinned in <code>requirements.txt</code> (scikit-learn 1.6.1, pandas 2.2.3, numpy 2.1.3). Full pipeline runs from a fresh clone of <a href="https://github.com/revianar/flyrank-ml-internship-starter">this repository</a>; the warehouse requires gated Hugging Face access. Every number in Results above traces to <code>work/outputs/w05_model_metrics.json</code>, committed alongside the notebooks.</p>
+  <p>Still open before this is final:</p>
+  <ul class="checklist">
+    <li>Reset <code>K_OVERRIDE</code> to <code>None</code> in <code>w05_model.ipynb</code> and re-commit the receipt under the rule's own k=3</li>
+    <li><code>work/notebooks/w01_research_question.ipynb</code></li>
+    <li><code>work/notebooks/w03_feature_leakage_check.ipynb</code></li>
+    <li><code>work/notebooks/w04_signal_audit.ipynb</code></li>
+    <li><code>work/notebooks/w06_validation_audit.ipynb</code></li>
+    <li><code>work/notebooks/w07_action_playbook.ipynb</code></li>
+  </ul>
+</section>
+
+<section id="ack">
+  <p class="secnum">08</p><h2>Acknowledgments &amp; data credit</h2>
+  <p>Built on the <a href="https://flyrank.ai">FlyRank ML Internship dataset</a>.</p>
+</section>
+</div>
+
+<footer><div class="wrap" style="padding:0;">Revian &middot; <a href="https://github.com/revianar/flyrank-ml-internship-starter">repo</a> &middot; draft, not yet submitted</div></footer>
+</body>
+</html>
