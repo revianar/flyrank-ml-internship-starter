@@ -1,0 +1,119 @@
+{
+  "seed": 42,
+  "k": 4,
+  "gem_cluster": null,
+  "feature_month": "2026-03",
+  "outcome_month": "2026-04",
+  "volume_floor": 10,
+  "visibility_cutoff": 0.1,
+  "n_pages": 21207,
+  "features": [
+    "engagement_rate",
+    "gsc_availability_rate",
+    "log_sessions",
+    "log_session_depth_sec"
+  ],
+  "versions": {
+    "sklearn": "1.6.1",
+    "pandas": "2.2.3",
+    "numpy": "2.1.3"
+  },
+  "k_selection": [
+    {
+      "k": 2,
+      "silhouette_mean": 0.433,
+      "silhouette_sd": 0.069,
+      "ari_transfer_mean": 0.499,
+      "smallest_cluster_n_min": 589
+    },
+    {
+      "k": 3,
+      "silhouette_mean": 0.331,
+      "silhouette_sd": 0.057,
+      "ari_transfer_mean": 0.624,
+      "smallest_cluster_n_min": 162
+    },
+    {
+      "k": 4,
+      "silhouette_mean": 0.398,
+      "silhouette_sd": 0.056,
+      "ari_transfer_mean": 0.642,
+      "smallest_cluster_n_min": 30
+    },
+    {
+      "k": 5,
+      "silhouette_mean": 0.382,
+      "silhouette_sd": 0.054,
+      "ari_transfer_mean": 0.577,
+      "smallest_cluster_n_min": 30
+    },
+    {
+      "k": 6,
+      "silhouette_mean": 0.38,
+      "silhouette_sd": 0.068,
+      "ari_transfer_mean": 0.646,
+      "smallest_cluster_n_min": 9
+    },
+    {
+      "k": 7,
+      "silhouette_mean": 0.367,
+      "silhouette_sd": 0.072,
+      "ari_transfer_mean": 0.565,
+      "smallest_cluster_n_min": 9
+    },
+    {
+      "k": 8,
+      "silhouette_mean": 0.355,
+      "silhouette_sd": 0.053,
+      "ari_transfer_mean": 0.648,
+      "smallest_cluster_n_min": 9
+    }
+  ],
+  "comparison": [
+    {
+      "set": "All floor pages (base rate)",
+      "n_pages": 21207,
+      "n_clients": 32,
+      "largest_client_share": 0.44,
+      "mar_engagement (selection window)": 0.022,
+      "apr_still_>=10_sessions": 0.579,
+      "apr_engagement (outcome)": 0.038
+    },
+    {
+      "set": "Baseline: all flagged",
+      "n_pages": 220,
+      "n_clients": 23,
+      "largest_client_share": 0.373,
+      "mar_engagement (selection window)": 0.058,
+      "apr_still_>=10_sessions": 0.464,
+      "apr_engagement (outcome)": 0.063
+    },
+    {
+      "set": "Baseline: top-50",
+      "n_pages": 50,
+      "n_clients": 8,
+      "largest_client_share": 0.6,
+      "mar_engagement (selection window)": 0.166,
+      "apr_still_>=10_sessions": 0.58,
+      "apr_engagement (outcome)": 0.087
+    },
+    {
+      "set": "Baseline: top-20",
+      "n_pages": 20,
+      "n_clients": 6,
+      "largest_client_share": 0.55,
+      "mar_engagement (selection window)": 0.244,
+      "apr_still_>=10_sessions": 0.4,
+      "apr_engagement (outcome)": 0.101
+    },
+    {
+      "set": "Baseline flagged ONLY (not in cluster)",
+      "n_pages": 220,
+      "n_clients": 23,
+      "largest_client_share": 0.373,
+      "mar_engagement (selection window)": 0.058,
+      "apr_still_>=10_sessions": 0.464,
+      "apr_engagement (outcome)": 0.063
+    }
+  ]
+}
